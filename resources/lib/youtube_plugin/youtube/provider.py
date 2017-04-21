@@ -99,7 +99,6 @@ class Provider(kodion.AbstractProvider):
         # set the items per page (later)
         settings = context.get_settings()
         verify_ssl = settings.get_bool('simple.requests.ssl.verify', False)
-
         items_per_page = settings.get_items_per_page()
 
         access_manager = context.get_access_manager()
@@ -230,7 +229,7 @@ class Provider(kodion.AbstractProvider):
 
     @kodion.RegisterProviderPath('^/playlist/(?P<playlist_id>.*)/$')
     def _on_playlist(self, context, re_match):
-        self.set_content_type(context, kodion.constants.content_type.VIDEOS)
+        self.set_content_type(context, kodion.constants.content_type.EPISODES)
 
         result = []
 
@@ -254,7 +253,7 @@ class Provider(kodion.AbstractProvider):
 
     @kodion.RegisterProviderPath('^/channel/(?P<channel_id>.*)/playlist/(?P<playlist_id>.*)/$')
     def _on_channel_playlist(self, context, re_match):
-        self.set_content_type(context, kodion.constants.content_type.VIDEOS)
+        self.set_content_type(context, kodion.constants.content_type.EPISODES)
 
         result = []
 
@@ -298,7 +297,7 @@ class Provider(kodion.AbstractProvider):
 
     @kodion.RegisterProviderPath('^/(?P<method>(channel|user))/(?P<channel_id>.*)/$')
     def _on_channel(self, context, re_match):
-        self.set_content_type(context, kodion.constants.content_type.VIDEOS)
+        self.set_content_type(context, kodion.constants.content_type.EPISODES)
 
         resource_manager = self.get_resource_manager(context)
 
@@ -447,7 +446,7 @@ class Provider(kodion.AbstractProvider):
         page = int(context.get_param('page', 1))
 
         if search_type == 'video':
-            self.set_content_type(context, kodion.constants.content_type.VIDEOS)
+            self.set_content_type(context, kodion.constants.content_type.EPISODES)
             pass
 
         if page == 1 and search_type == 'video' and not event_type:
@@ -725,7 +724,7 @@ class Provider(kodion.AbstractProvider):
         return result
 
     def set_content_type(self, context, content_type):
-        if content_type == kodion.constants.content_type.VIDEOS:
+        if content_type == kodion.constants.content_type.EPISODES:
             context.set_content_type(content_type)
             context.add_sort_method(kodion.constants.sort_method.UNSORTED,
                                     kodion.constants.sort_method.VIDEO_RUNTIME,
